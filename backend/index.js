@@ -1,0 +1,44 @@
+import express from "express"
+import mongoose from "mongoose"
+import bodyparser from "body-parser"
+import cors from 'cors'
+import Items from "./models/Items.js"
+import { items } from "./data.js"
+import { register,login } from "./controllers/auth.js"
+import { updateProfile,getUser} from "./controllers/user.js"
+import { postItems } from "./controllers/items.js"
+import { addItems } from "./controllers/order.js"
+
+const app = express()
+
+const port = 3005
+app.listen(port,()=>{
+    console.log(`server is listen on ${port}`)
+})
+app.use(bodyparser.json({limit: "30mb",extended: true}));
+ app.use(bodyparser.urlencoded({limit: "30mb",extended: true}));
+//app.use(express.static('../frontend'));
+ app.use(cors())
+app.post('/register',register)
+app.post('/login',login)
+app.get('/items',postItems)
+
+
+app.post('/profile',updateProfile)
+app.get('/profile/:id',getUser)
+
+app.post('/order/items',addItems)
+
+
+mongoose.connect('mongodb://localhost:27017',{
+dbName:"grocery",
+useNewUrlParser:true,
+    useUnifiedTopology:true
+}).then(()=>{
+    console.log('database connected')
+
+// Items.insertMany(items)
+}).catch(err=>{
+    console.log(err)
+})
+

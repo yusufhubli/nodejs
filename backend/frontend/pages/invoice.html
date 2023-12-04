@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../style.css">
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js'></script>
+    <title>Gromart | invoice</title>
+</head>
+
+<body>
+    <main id="invoice">
+        <section class="flex " style="border-bottom: 1.5px solid black;">
+            <h1 class=" in-name">Gromart</h1>
+            <img src="../items/bar.png" class="bar-img" alt="">
+        </section>
+        <article class="user">
+            <h4>Mohammed yusuf</h4>
+            <small>rallur 1st cross near bus stand,dharwad,karnataka 580001</small><br>
+            <small>9456987654</small>
+        </article>
+        <div class="det">
+            <p>Purchase Details</p>
+        </div>
+        <table>
+            <tr>
+                <th>S.No</th>
+                <th>Item</th>
+                <th class="td">Net</th>
+                <th class="td">Qty</th>
+                <th class="td">Price</th>
+                <th class="td">Total</th>
+            </tr>
+            <tr>
+                <td>1.</td>
+                <td>tomato</td>
+                <td class="td">1kg</td>
+                <td class="td">4</td>
+                <td class="td">40</td>
+                <td class="td">160</td>
+            </tr>
+            <tr>
+                <td>1.</td>
+                <td>tomato</td>
+                <td class="td">1kg</td>
+                <td class="td">4</td>
+                <td class="td">40</td>
+                <td class="td">160</td>
+            </tr>
+        </table>
+        <p class="space"></p>
+        <div class="det flex">
+            <p>Total Amount</p>
+            <p>320</p>
+        </div>
+        <small class="small">all the price and details are based on market standards</small>
+    </main>
+    <div class="download">
+        <p>Download invoice as PDF</p>
+    <button class="down" onclick="generatePdf()">Download</button>
+    </div>
+    <script>
+        // function generatePdf() {
+        //     const invoice = document.getElementById("invoice")
+        //     html2pdf().from(invoice).save()
+        // }
+    </script>
+
+</body>
+
+</html>
