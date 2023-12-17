@@ -1,5 +1,10 @@
 const items = JSON.parse(localStorage.getItem("items"))
 const add = JSON.parse(localStorage.getItem("add"))
+const login = JSON.parse(localStorage.getItem("loginId"))
+
+if(login == null){
+location.href = "login.html"
+}
 
 const container = document.getElementById("veg")
 const container2 = document.getElementById("fru")
@@ -136,18 +141,42 @@ const addToCart = (items)=>{
     }
     localStorage.setItem("add", JSON.stringify(add))
 }
-const cartSum =()=>{
+const cartSum = () => {
+    if(add){
     const count = add.map(x => {
-      return x.item
+        return x.item
     })
-  const sum = count.reduce((x, y) => x + y, 0)
-  console.log(sum)
-  document.getElementById("p").innerHTML = sum
-  }
+    const sum = count.reduce((x, y) => x + y, 0)
+    console.log(sum)
+    document.getElementById("p").innerHTML = sum
+}else{
+    document.getElementById("p").innerHTML = '0'
+}
+}
   cartSum()
 
 
   const logout = ()=>{
-    localStorage.clear()
+    document.querySelector(".pop").innerHTML = `
+    <div id="popup">
+         <main>
+             <p>Really,want to logout</p>
+             <button onclick="closePopup()">Ok</button>
+         </main>
+     </div>`
+   
+ }
+  function closePopup(){
+    const pop = document.getElementById("popup")
+    pop.style.display = 'none'
+   localStorage.clear()
     location.href = 'login.html'
-  }
+    }
+  function tog(){
+    document.getElementById("he").style.marginLeft = '-240px'
+    document.getElementById("he").style.transitionDuration = '0.6s'
+    }
+    function show(){
+      document.getElementById("he").style.marginLeft = '0'
+      document.getElementById("he").style.transitionDuration = '0.6s'
+      }

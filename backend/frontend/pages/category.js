@@ -1,15 +1,24 @@
 const items = JSON.parse(localStorage.getItem("items")) || []
 const add = JSON.parse(localStorage.getItem("add")) || []
+const login = JSON.parse(localStorage.getItem("loginId"))
 
-const cartSum =()=>{
+if (login == null) {
+    location.href = "login.html"
+}
+
+const cartSum = () => {
+    if(add){
     const count = add.map(x => {
-      return x.item
+        return x.item
     })
-  const sum = count.reduce((x, y) => x + y, 0)
-  console.log(sum)
-  document.getElementById("p").innerHTML = sum
-  }
-  cartSum()
+    const sum = count.reduce((x, y) => x + y, 0)
+    console.log(sum)
+    document.getElementById("p").innerHTML = sum
+}else{
+    document.getElementById("p").innerHTML = '0'
+}
+}
+cartSum()
 
 const getItem = async () => {
     const res = await fetch('http://localhost:3005/items', {
@@ -27,45 +36,45 @@ const getItem = async () => {
 getItem()
 
 
-const category = ()=>{
-       const one = document.getElementById('one').dataset.id
-       const cate = items.filter((items) => items.category == one) 
-       cateItems(cate)   
-       location.href ='category.html'
-       }
-       
-       const category1 = ()=>{
-        const one = document.getElementById('two').dataset.id
-        const cate = items.filter((items) => items.category == one) 
-        cateItems(cate)   
-        }
-        const category2 = ()=>{
-            const one = document.getElementById('thr').dataset.id
-            const cate = items.filter((items) => items.category == one) 
-            cateItems(cate)   
-            }
-            const category3 = ()=>{
-                const one = document.getElementById('fou').dataset.id
-                const cate = items.filter((items) => items.category == one) 
-                cateItems(cate)   
-                }
-                const category4 = ()=>{
-                    const one = document.getElementById('fiv').dataset.id
-                    const cate = items.filter((items) => items.category == one) 
-                    cateItems(cate)   
-                    }
-       
+const category = () => {
+    const one = document.getElementById('one').dataset.id
+    const cate = items.filter((items) => items.category == one)
+    cateItems(cate)
+    location.href = 'category.html'
+}
 
-const cateItems = (item)=>{
+const category1 = () => {
+    const one = document.getElementById('two').dataset.id
+    const cate = items.filter((items) => items.category == one)
+    cateItems(cate)
+}
+const category2 = () => {
+    const one = document.getElementById('thr').dataset.id
+    const cate = items.filter((items) => items.category == one)
+    cateItems(cate)
+}
+const category3 = () => {
+    const one = document.getElementById('fou').dataset.id
+    const cate = items.filter((items) => items.category == one)
+    cateItems(cate)
+}
+const category4 = () => {
+    const one = document.getElementById('fiv').dataset.id
+    const cate = items.filter((items) => items.category == one)
+    cateItems(cate)
+}
+
+
+const cateItems = (item) => {
     const product = item.map(items => {
-const { _id,itemId, itemName, itemImage, itemQty, price, category } = items
-    return `
+        const { _id, itemId, itemName, itemImage, itemQty, price, category } = items
+        return `
     <div class="item" key=${_id}>
          <div class="img-container"><img class="item-img" src="../items/${itemImage}" alt=""></div>
                <h3 class="item-name">${itemName}<span></span></h3>
                <p class="item-qty">${itemQty}</p>
                <div class="contain">
-                   <h2 class="item-price">$${price}</h2>
+                   <h2 class="item-price">₹${price}</h2>
                    <Button class="add-cart" onclick='addToCart(${itemId})'>
                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cart3" viewBox="0 0 16 16">
                            <path d="M0 1.5A.5.5 0 0 1 .5 1H2a.5.5 0 0 1 .485.379L2.89 3H14.5a.5.5 0 0 1 .49.598l-1 5a.5.5 0 0 1-.465.401l-9.397.472L4.415 11H13a.5.5 0 0 1 0 1H4a.5.5 0 0 1-.491-.408L2.01 3.607 1.61 2H.5a.5.5 0 0 1-.5-.5zM3.102 4l.84 4.479 9.144-.459L13.89 4H3.102zM5 12a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm7 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-7 1a1 1 0 1 1 0 2 1 1 0 0 1 0-2zm7 0a1 1 0 1 1 0 2 1 1 0 0 1 0-2z"/>
@@ -82,26 +91,54 @@ const { _id,itemId, itemName, itemImage, itemQty, price, category } = items
 
 
 const one = document.getElementById('one').dataset.id
-const cate = items.filter((items) => items.category == one) 
-cateItems(cate) 
+const cate = items.filter((items) => items.category == one)
+cateItems(cate)
 
-const addToCart = (items)=>{
+const addToCart = (items) => {
     //let cartitem = document.getElementById(cart)
     console.log(items)
     let search = add.find((x) => x.id === items)
     if (search === undefined) {
         add.push({
-            id:items,
+            id: items,
             item: 1,
         })
-       
+
     } else {
         search.item = 1
     }
     localStorage.setItem("add", JSON.stringify(add))
+    cartSum()
 }
 
 const logout = ()=>{
+    document.querySelector(".pop").innerHTML = `
+    <div id="popup">
+         <main>
+             <p>Really,want to logout</p>
+             <button onclick="closePopup()">Ok</button>
+             <button onclick="tog2()">Cancel</button>
+         </main>
+     </div>`
+   
+ }
+
+function closePopup() {
+    const pop = document.getElementById("popup")
+    pop.style.display = 'none'
     localStorage.clear()
     location.href = 'login.html'
-  }
+}
+
+function tog2() {
+    const pop = document.getElementById("popup")
+    pop.style.display = 'none'
+}
+function tog() {
+    document.getElementById("he").style.marginLeft = '-240px'
+    document.getElementById("he").style.transitionDuration = '0.6s'
+}
+function show() {
+    document.getElementById("he").style.marginLeft = '0'
+    document.getElementById("he").style.transitionDuration = '0.6s'
+}

@@ -9,6 +9,7 @@
 </head>
 
 <body>
+    <div class="pop"></div>
     <div class="reg">
         <div class="form">
             <h2 class="reg-name">Login</h2>
@@ -19,6 +20,7 @@
                 <input class="input" type="password" name="password" id="password">
             </label><br>
             <button class="reg-btn" onclick="handlesubmit()" id="sub">Login</button>
+            <small class="sm">create new account <a class="c" href="reg.html">Register</a></small>
         </div>
     </div>
 </body>
@@ -36,17 +38,33 @@
     const res = await fetch("http://localhost:3005/login",{
         headers:{
             "content-type":"application/json",
-            useNewUrlParser:true,
-            useUnifiedTopology:true
         },
         method:"POST",
         body:JSON.stringify(reg)
     })
     const dara = await res.json()
-    console.log(dara[0]._id)
-  localStorage.setItem("loginId",JSON.stringify({userId:dara[0]._id}))
-   console.log(login)
-  location.href='home.html'
+    console.log(dara)
+    if(dara == null){
+        document.querySelector(".pop").innerHTML = `
+    <div id="popup">
+         <main>
+             <p>user does not exist</p>
+             <button onclick="closePopup()">Ok</button>
+         </main>
+     </div>`
+    }else{
+    localStorage.setItem("loginId",JSON.stringify({userId:dara._id}))
+    location.href = "home.html"
+    }
+//   localStorage.setItem("loginId",JSON.stringify({userId:dara[0]._id}))
+//    console.log(login)
+//   location.href='home.html'
+}
+function closePopup(){
+    const pop = document.getElementById("popup")
+    pop.style.display = 'none'
+    location.href ='reg.html'
+
 }
 </script>
 </html>

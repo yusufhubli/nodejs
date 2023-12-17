@@ -7,7 +7,7 @@ import { items } from "./data.js"
 import { register,login } from "./controllers/auth.js"
 import { updateProfile,getUser} from "./controllers/user.js"
 import { postItems } from "./controllers/items.js"
-import { addItems } from "./controllers/order.js"
+import { addItems,addOrder, getOrder, sendItems,getSingleItem,getSingleOrder } from "./controllers/order.js"
 
 const app = express()
 
@@ -28,6 +28,13 @@ app.post('/profile',updateProfile)
 app.get('/profile/:id',getUser)
 
 app.post('/order/items',addItems)
+app.post('/order',addOrder)
+
+app.get('/order/:id',getOrder)
+app.get('/order/items/item',sendItems)
+
+app.get('/order/orders/:id',getSingleOrder)
+app.get('/order/items/item/:id',getSingleItem)
 
 
 mongoose.connect('mongodb://localhost:27017',{

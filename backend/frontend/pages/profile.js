@@ -3,8 +3,12 @@
 const login = JSON.parse(localStorage.getItem("loginId"))
 const add = JSON.parse(localStorage.getItem('add'))
 
+if (login == null) {
+    location.href = "login.html"
+}
+
 async function data() {
-const file = document.getElementById("file")
+    const file = document.getElementById("file")
     const user = document.getElementById("name").value
     const email = document.getElementById("email").value
     const address = document.getElementById("address").value
@@ -12,45 +16,46 @@ const file = document.getElementById("file")
     const state = document.getElementById("state").value
     const city = document.getElementById("city").value
     let edit = {
-        userId:"",
-        name:"",
-        email:"",
-        address:"",
-        file:"",
-        phone:"",
-        city:"",
-        state:"",
+        userId: "",
+        name: "",
+        email: "",
+        address: "",
+        file: "",
+        phone: "",
+        city: "",
+        state: "",
     }
     edit = {
-            userId:login.userId,
-            name: user,
-            email: email,
-            address: address,
-            phone: phone,
-            city: city,
-            state: state
-        }
-    const res = await fetch("http://localhost:3005/profile",{
-        headers:{
-            "content-type":"application/json"
+        userId: login.userId,
+        name: user,
+        email: email,
+        address: address,
+        phone: phone,
+        city: city,
+        state: state
+    }
+    const res = await fetch("http://localhost:3005/profile", {
+        headers: {
+            "content-type": "application/json"
         },
-        method:"POST",
-        body:JSON.stringify(edit)
+        method: "POST",
+        body: JSON.stringify(edit)
     })
     const data1 = await res.json()
     console.log(data1)
 }
 
-const getUser = async()=>{
-    const resuser = await fetch(`http://localhost:3005/profile/${login.userId}`,{
-        headers:{
-            "content-type":"application/json"
+const getUser = async () => {
+    const resuser = await fetch(`http://localhost:3005/profile/${login.userId}`, {
+        headers: {
+            "content-type": "application/json"
         },
-        method:"GET"
+        method: "GET"
     })
     const getu = await resuser.json()
-    const {name,email,address,city,phone,state} = getu
-    const profile =`
+    console.log(getu)
+    const { name, email, address, city, phone, state } = getu
+    const profile = `
     <div class="profile-box">
     <div class="box-img">
         <img class="pro-img" src="vite.svg" alt="">
@@ -58,13 +63,10 @@ const getUser = async()=>{
             <h3 class="h3">${name}</h3>
             <p>${email}</p>
             <p>${phone}</p>
-            <p>${city}</p>
-            <p>${state}</p>
-
         </div>
     </div>
     <div class="pro-info">
-        <p>${address}</p>
+        <p>${address},${city},${state}</p>
         <div class="edit flex">
             <button class="edit-btn">
                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
@@ -87,22 +89,129 @@ const getUser = async()=>{
 </div>
 `
 
-document.getElementById("profile").innerHTML = profile
+    document.getElementById("profile").innerHTML = profile
 }
 getUser()
 
-const cartSum =()=>{
-    const count = add.map(x => {
-      return x.item
+const cartSum = () => {
+    if (add) {
+        const count = add.map(x => {
+            return x.item
+        })
+        const sum = count.reduce((x, y) => x + y, 0)
+        console.log(sum)
+        document.getElementById("p").innerHTML = sum
+    } else {
+        document.getElementById("p").innerHTML = '0'
+    }
+}
+cartSum()
+
+async function q() {
+    const order = await fetch(`http://localhost:3005/order/${login.userId}`, {
+        headers: {
+            "content-type": "application/json"
+        },
+        method: "GET"
     })
-  const sum = count.reduce((x, y) => x + y, 0)
-  console.log(sum)
-  document.getElementById("p").innerHTML = sum
-  }
-  cartSum()
+    const or = await order.json()
+    console.log(or)
+    const order2 = await fetch("http://localhost:3005/order/items/item", {
+        headers: {
+            "content-type": "application/json"
+        },
+        method: "GET"
+    })
+    const item = await order2.json()
+    if (or != "") {
+        document.getElementById("history-container").innerHTML = or.map(order => {
+            const { _id, amount } = order
+            const orderItem = item.filter(x => x.orderId == _id)
+            //  console.log(object)
+            return `<div class="history">
+    <div class="loop">
+        ${orderItem.map(y => {
+                const { itemName, itemQty, itemImage, itemCount, price, totalPrice } = y
+                return `<div class="order-item">
+            <img src="../items/${itemImage}" class="or-img" alt="">
+            <div class="item-detail">
+                <div class="flex lead">
+                    <p>${itemName}</p>
+                    <p>${itemQty}</p>
+                </div>
+                <div class="flex lead">
+                    <p>qty:${itemCount}</p>
+                    <p>$${price}</p>
+                </div>
+                <h4>$${totalPrice}</h4>
+            </div>
+        </div>`
+            }).join(" ")
+                }
+    </div>
+    <div class="or-detail">
+        <div class="flex lead2">
+            <b>orderId</b>
+            <p id="oid">${_id}</p>
+        </div>
+        <div class="flex lead2">
+            <b>Quantity</b>
+            <p>6</p>
+        </div>
+        <div class="flex lead2">
+            <b>items</b>
+            <p>2</p>
+        </div>
+        <div class="flex lead2">
+            <b>Total</b>
+            <p>$${amount}</p>
+        </div>
+        <div class="line"></div>
+        <div class="flex">
+            <h4>Order Receipt</h4><button class="edit-btn" onclick='asdf("${_id}")' id="ivb">Invoice</button>
+        </div>
+    </div>
+</div> `
+        }).join(" ")
+    } else {
+        document.getElementById("history-container").innerHTML = `<div class="empty-div">
+    
+     <h4 class="empty">you have Not Order Yet</h4></div> `
+    }
+
+}
+
+q()
+
+const asdf = (_id) => {
+
+    localStorage.setItem("orderId", JSON.stringify({ orderId: _id }))
+    location.href = "invoice.html"
+}
+
+const logout = () => {
+    document.querySelector(".pop").innerHTML = `
+    <div id="popup">
+         <main>
+             <p>Really,want to logout</p>
+             <button onclick="closePopup()">Ok</button>
+         </main>
+     </div>`
+
+}
 
 
-  const logout = ()=>{
+function closePopup() {
+    const pop = document.getElementById("popup")
+    pop.style.display = 'none'
     localStorage.clear()
     location.href = 'login.html'
-  }
+}
+function tog() {
+    document.getElementById("he").style.marginLeft = '-240px'
+    document.getElementById("he").style.transitionDuration = '0.6s'
+}
+function show() {
+    document.getElementById("he").style.marginLeft = '0'
+    document.getElementById("he").style.transitionDuration = '0.6s'
+}

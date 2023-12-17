@@ -7,6 +7,7 @@ const orderItemSchema = new mongoose.Schema({
     },
     itemName:String,
     itemQty:String,
+    itemImage:String,
     category:String,
     itemCount:Number,
     price:Number,
@@ -15,7 +16,13 @@ const orderItemSchema = new mongoose.Schema({
 
 export const OrderItem = mongoose.model("OrderItem",orderItemSchema)
 
+
+
 const orderschema = new mongoose.Schema({
+    userId:{
+        type:mongoose.Schema.Types.ObjectId,
+        ref:"User"
+    },
     amount:Number,
     payment:{
         type:String,
