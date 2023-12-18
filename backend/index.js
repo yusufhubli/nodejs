@@ -2,6 +2,7 @@ import express from "express"
 import dotenv from 'dotenv'
 import mongoose from "mongoose"
 import bodyparser from "body-parser"
+import {readFileSync} from 'fs'
 import cors from 'cors'
 import Items from "./models/Items.js"
 import { items } from "./data.js"
@@ -22,6 +23,14 @@ app.use(bodyparser.json({limit: "30mb",extended: true}));
  app.use(bodyparser.urlencoded({limit: "30mb",extended: true}));
 //app.use(express.static('../frontend'));
  app.use(cors())
+
+const homepage = readFileSync("./frontend/pages/index.html")
+
+ app.get("/",(req,res)=>{
+    res.writeHead(200,{"content-type":"text/html"})
+    res.write(homepage)
+    res.end()
+ })
 app.post('/register',register)
 app.post('/login',login)
 app.get('/items',postItems)
