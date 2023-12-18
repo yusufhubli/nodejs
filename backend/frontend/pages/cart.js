@@ -100,24 +100,6 @@ let Delete = (id) => {
   localStorage.setItem("add", JSON.stringify(add))
  console.log(add)
  addCart(add)
- document.getElementById("cart").innerHTML = `
-<div class="details">
-              <div class="total flex">
-                 <h2>Total Cost:<span>${amount > 500 ? amount : amount + 20}₹</span></h2>
-                 <button class="checkout" onclick="toggle()">Checkout</button>
-              </div>
-              <div class="cart-detail">
-                <h3 class="heading">Order Details</h3>
-                <div class="line"></div>
-                <div class=" flex detail-item"><p>Price</p><p>₹${amount}</p></div>
-                <div class=" flex detail-item"><p>Discount</p><p>₹0</p></div>
-                <div class=" flex detail-item"><p>Delivery Charges</p><p>₹${amount > 500 ? 0 : 20}</p></div>
-                <div class=" flex detail-item"><p>You Saved</p><p>₹0</p></div>
-                <div class="line"></div>
-                <div class=" flex detail-item"><p>Total</p><p id='total'>₹${amount > 500 ? amount : amount + 20}</p></div>
-              </div>
-            </div> `
-
 
 }
 
