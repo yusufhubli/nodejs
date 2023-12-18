@@ -25,9 +25,11 @@ app.use(bodyparser.json({limit: "30mb",extended: true}));
  app.use(cors())
 
 const homepage = readFileSync("./frontend/pages/index.html")
+console.log(homepage)
 
  app.get("/",(req,res)=>{
     res.writeHead(200,{"content-type":"text/html"})
+    //res.writeHead(200,{"content-type":"text/css"})
     res.write(homepage)
     res.end()
  })
