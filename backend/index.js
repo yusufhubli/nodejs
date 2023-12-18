@@ -23,6 +23,9 @@ app.use(bodyparser.json({limit: "30mb",extended: true}));
  app.use(bodyparser.urlencoded({limit: "30mb",extended: true}));
 //app.use(express.static('../frontend'));
  app.use(cors())
+ app.use('/',(req,res)=>{
+    res.json({message:"hello world"})
+ })
 app.post('/register',register)
 app.post('/login',login)
 app.get('/items',postItems)
