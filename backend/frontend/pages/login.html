@@ -54,7 +54,19 @@
      </div>`
     }else{
     localStorage.setItem("loginId",JSON.stringify({userId:dara._id}))
+    const getItem = async () => {
+    const res = await fetch('http://localhost:3005/items', {
+        method: 'GET',
+        headers: {
+            "content-type": "application/json"
+        }
+    })
+    const data = await res.json()
+    localStorage.setItem("items",JSON.stringify(data))
     location.href = "home.html"
+
+}
+getItem()
     }
 //   localStorage.setItem("loginId",JSON.stringify({userId:dara[0]._id}))
 //    console.log(login)
@@ -63,7 +75,7 @@
 function closePopup(){
     const pop = document.getElementById("popup")
     pop.style.display = 'none'
-    location.href ='reg.html'
+    location.href ='index.html'
 
 }
 </script>

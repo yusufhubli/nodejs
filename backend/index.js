@@ -1,4 +1,5 @@
 import express from "express"
+import dotenv from 'dotenv'
 import mongoose from "mongoose"
 import bodyparser from "body-parser"
 import cors from 'cors'
@@ -10,6 +11,8 @@ import { postItems } from "./controllers/items.js"
 import { addItems,addOrder, getOrder, sendItems,getSingleItem,getSingleOrder } from "./controllers/order.js"
 
 const app = express()
+
+dotenv.config()
 
 const port = 3005
 app.listen(port,()=>{
@@ -37,7 +40,7 @@ app.get('/order/orders/:id',getSingleOrder)
 app.get('/order/items/item/:id',getSingleItem)
 
 
-mongoose.connect('mongodb://localhost:27017',{
+mongoose.connect(process.env.MONGO_URL,{
 dbName:"grocery",
 useNewUrlParser:true,
     useUnifiedTopology:true

@@ -1,3 +1,4 @@
+
 const items = JSON.parse(localStorage.getItem("items"))
 const add = JSON.parse(localStorage.getItem("add"))
 const login = JSON.parse(localStorage.getItem("loginId"))
@@ -5,6 +6,9 @@ const login = JSON.parse(localStorage.getItem("loginId"))
 if(login == null){
 location.href = "login.html"
 }
+
+
+
 
 const container = document.getElementById("veg")
 const container2 = document.getElementById("fru")
@@ -17,6 +21,7 @@ const fruit = items.filter(x=>x.category == "fruits")
 const dry = items.filter(x=>x.category == "dryfruits")
 const rice = items.filter(x=>x.category == "ricemeals")
 const snack = items.filter(x=>x.category == "snacksbiscuits")
+
 // console.log(veg)
 container.innerHTML = veg.map(x=>{
     const {itemId,itemName,itemImage,price,itemQty} =x

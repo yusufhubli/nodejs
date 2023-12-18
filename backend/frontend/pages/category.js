@@ -20,27 +20,27 @@ const cartSum = () => {
 }
 cartSum()
 
-const getItem = async () => {
-    const res = await fetch('http://localhost:3005/items', {
-        method: 'GET',
-        headers: {
-            "content-type": "application/json"
-        }
-    }).then(res => res.json())
-        .then(data => {
-            //  return data
-            localStorage.setItem("items", JSON.stringify(data))
-        })
-    return res
-}
-getItem()
+// const getItem = async () => {
+//     const res = await fetch('http://localhost:3005/items', {
+//         method: 'GET',
+//         headers: {
+//             "content-type": "application/json"
+//         }
+//     }).then(res => res.json())
+//         .then(data => {
+//             //  return data
+//             localStorage.setItem("items", JSON.stringify(data))
+//         })
+  
+// }
+// getItem()
+
 
 
 const category = () => {
     const one = document.getElementById('one').dataset.id
     const cate = items.filter((items) => items.category == one)
     cateItems(cate)
-    location.href = 'category.html'
 }
 
 const category1 = () => {
@@ -88,11 +88,10 @@ const cateItems = (item) => {
     document.getElementById('items').innerHTML = product
 }
 
+const cate2 = items.filter((item) => item.category == 'vegetables')
+console.log(cate2)
+cateItems(cate2)
 
-
-const one = document.getElementById('one').dataset.id
-const cate = items.filter((items) => items.category == one)
-cateItems(cate)
 
 const addToCart = (items) => {
     //let cartitem = document.getElementById(cart)
